@@ -10,6 +10,10 @@ class FoursquareClient
     @user_info ||= get('users/self').parsed['response']['user']
   end
 
+  def checkins
+    get('users/self/checkins?limit=250').parsed['response']['checkins']
+  end
+
   def user_id
     user_info['id']
   end

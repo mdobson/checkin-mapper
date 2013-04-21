@@ -1,5 +1,6 @@
 Maply::Application.routes.draw do
   
+  
   resource :user
 	scope module: 'clients' do
 		resources :foursquare_clients, only: ['new'], path: 'clients/foursquare' do
@@ -10,6 +11,7 @@ Maply::Application.routes.draw do
 	end
 
   root :to => 'users#new'
+  get 'map' => 'map#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

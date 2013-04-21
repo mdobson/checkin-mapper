@@ -4,7 +4,16 @@ class UsersController < ApplicationController
   end
 
   def show
-    render text: "hello #{current_user.name}"
+    filtered_checkins = []
+    current_user.checkins["items"].each do |checkin|
+      filtered_checkin = {}
+      filtered_checkin["location"] = {}
+      filtered_checkin["location"]["lat"] = checkin["venue"]["location"]["lat"]
+      filtered_checkin["location"]["lng"] = checkin["venue"]["location"]["lng"]
+      filtered_checkin["name"] = checkin["venue"]["name"]
+      filtered_checkins.push(filtered_checkin)
+    end
+    render json: "#{filtered_checkins.to_json}"
   end
 
   private

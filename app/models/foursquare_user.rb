@@ -7,6 +7,10 @@ class FoursquareUser < ActiveRecord::Base
     @client ||= FoursquareClient.new(access_token)
   end
 
+  def checkins
+    client.checkins
+  end
+
   class << self
     def find_or_create_by_access_token(access_token)
       client = FoursquareClient.new(access_token)

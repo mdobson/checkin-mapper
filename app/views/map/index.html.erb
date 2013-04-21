@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 80% }
+      body { height: 80%; margin: 0; padding: 0; font-family: Helvetica Neue; }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC7hP2xGixahHNAHbRilP4MBQvGyd5jVJo&sensor=false">
+    </script>
+    <script type="text/javascript">
+    var info = new google.maps.InfoWindow({});
+    function createMarker(pin,map,checkin){
+    	
+		var marker = new google.maps.Marker({
+			position: pin,
+			map: map,
+			title:checkin.name
+		});
+		
+		google.maps.event.addListener(marker, 'click', function() {
+		  info.setContent(checkin.name);
+		  info.open(map,marker);
+		});
+    }
+
+    function loadXMLDoc(map)
+	{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	    {
+	    	var data = JSON.parse(xmlhttp.responseText);
+	    	for (var i = 0; i < data.length; i++) {
+	    		var checkin = data[i];
+	    		console.log(checkin.name);
+	    		var pin = new google.maps.LatLng(checkin.location.lat, checkin.location.lng);
+	    		createMarker(pin,map,checkin);
+	    	};
+	    }
+	  }
+	xmlhttp.open("GET","user#",true);
+	xmlhttp.send();
+	}
+      function initialize() {
+      	
+        var mapOptions = {
+          center: new google.maps.LatLng(42.3314, -83.0458),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+       	loadXMLDoc(map);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+    <div id="data"></div>
+    <span>Made dis 4 u</span>
+  </body>
+</html>
